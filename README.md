@@ -14,16 +14,62 @@ To write a program to predict the price of the house and number of occupants in 
 4. 
 
 ## Program:
+
+## Developed by: HEMALISHA T
+## RegisterNumber: 212225040123
+
 ```
-/*
-Program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor.
-Developed by: 
-RegisterNumber:  
-*/
+import numpy as np
+
+# Input Features
+X = np.array([
+    [2, 80, 50],
+    [3, 60, 40],
+    [5, 90, 70],
+    [7, 85, 80],
+    [9, 95, 90]
+], dtype=float)
+
+# Target
+y = np.array([50, 45, 70, 80, 95], dtype=float)
+
+# Initialize weights and bias
+w = np.zeros(X.shape[1])
+b = 0
+
+# Hyperparameters
+lr = 0.0001
+epochs = 1000
+
+# SGD Training
+for epoch in range(epochs):
+
+    for i in range(len(X)):
+
+        # Prediction
+        y_pred = np.dot(X[i], w) + b
+
+        # Error
+        error = y_pred - y[i]
+
+        # Update weights and bias
+        w = w - lr * error * X[i]
+        b = b - lr * error
+
+# Final weights
+print("Weights:", w)
+print("Bias:", b)
+
+# Prediction
+predictions = np.dot(X, w) + b
+
+print("\nPredictions:")
+print(predictions)
 ```
 
+
 ## Output:
-![multivariate linear regression model for predicting the price of the house and number of occupants in the house](sam.png)
+![multivariate linear regression model for predicting the price of the house and number of occupants in the house](4.png)
 
 
 ## Result:
