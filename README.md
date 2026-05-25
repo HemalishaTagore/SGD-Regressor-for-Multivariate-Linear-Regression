@@ -1,76 +1,46 @@
-# SGD-Regressor-for-Multivariate-Linear-Regression
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import SGDRegressor
+from sklearn.multioutput import MultiOutputRegressor
 
-## AIM:
-To write a program to predict the price of the house and number of occupants in the house with SGD regressor.
+data = {
+    'Size': [1000, 1200, 1500, 1800, 2000],
+    'Bedrooms': [2, 2, 3, 3, 4],
+    'Price': [300000, 350000, 400000, 450000, 500000],
+    'Occupants': [2, 3, 4, 5, 6]
+}
 
-## Equipments Required:
-1. Hardware – PCs
-2. Anaconda – Python 3.7 Installation / Jupyter notebook
+df = pd.DataFrame(data)
 
-## Algorithm
-1. Load California housing data, select features and targets, and split into training and testing sets.
-2. Scale both X (features) and Y (targets) using StandardScaler.
-3. Use SGDRegressor wrapped in MultiOutputRegressor to train on the scaled training data.
-4. Predict on test data, inverse transform the results, and calculate the mean squared error.
+X = df[['Size', 'Bedrooms']]
 
-## Program:
+y = df[['Price', 'Occupants']]
 
-## Developed by: HEMALISHA T
-## RegisterNumber: 212225040123
+model = MultiOutputRegressor(SGDRegressor())
 
-```
-import numpy as np
+model.fit(X, y)
 
-# Input Features
-X = np.array([
-    [2, 80, 50],
-    [3, 60, 40],
-    [5, 90, 70],
-    [7, 85, 80],
-    [9, 95, 90]
-], dtype=float)
+prediction = model.predict([[1600, 3]])
 
-# Target
-y = np.array([50, 45, 70, 80, 95], dtype=float)
+print("Predicted Price:", prediction[0][0])
+print("Predicted Occupants:", prediction[0][1])
 
-# Initialize weights and bias
-w = np.zeros(X.shape[1])
-b = 0
+plt.scatter(df['Size'], df['Price'])
 
-# Hyperparameters
-lr = 0.0001
-epochs = 1000
+plt.plot(df['Size'], model.predict(X)[:,0])
 
-# SGD Training
-for epoch in range(epochs):
+plt.xlabel("House Size")
+plt.ylabel("House Price")
+plt.title("House Price Prediction")
 
-    for i in range(len(X)):
+plt.show()
 
-        # Prediction
-        y_pred = np.dot(X[i], w) + b
+plt.scatter(df['Size'], df['Occupants'])
 
-        # Error
-        error = y_pred - y[i]
+plt.plot(df['Size'], model.predict(X)[:,1])
 
-        # Update weights and bias
-        w = w - lr * error * X[i]
-        b = b - lr * error
+plt.xlabel("House Size")
+plt.ylabel("Occupants")
+plt.title("Occupants Prediction")
 
-# Final weights
-print("Weights:", w)
-print("Bias:", b)
-
-# Prediction
-predictions = np.dot(X, w) + b
-
-print("\nPredictions:")
-print(predictions)
-```
-
-
-## Output:
-![multivariate linear regression model for predicting the price of the house and number of occupants in the house](4.png)
-
-
-## Result:
-Thus the program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor is written and verified using python programming.
+plt.show()
